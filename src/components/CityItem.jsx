@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
+import { useCities } from "../contexts/CitiesContext";
 import styles from "./CityItem.module.css";
 import { Link } from "react-router-dom";
 
 function CityItem({ city }) {
-  const { cityName, emoji, date, id, position} = city;
+  const { cityName, emoji, date, id, position } = city;
+  const { currentCity } = useCities();
 
   const formatDate = (date) =>
     new Intl.DateTimeFormat("en", {
@@ -15,10 +17,15 @@ function CityItem({ city }) {
 
   return (
     <li>
-       {/* in this case it attaches the id to the existent url
+      {/* in this case it attaches the id to the existent url
         but if we give `/${id}`  it will go to root then attaches
          the id*/}
-      <Link to={`${id}?lat=${position.lat}&lng=${position.lng}`} className={styles.cityItem}>
+      <Link
+        to={`${id}?lat=${position.lat}&lng=${position.lng}`}
+        className={`${styles.cityItem} ${
+          currentCity.id === id ? styles["cityItem--active"] : ` `
+        }`}
+      >
         <span className={styles.emoji}>{emoji}</span>
         <h3 className={styles.name}>{cityName}</h3>
         <time className={styles.date}>{formatDate(date)}</time>
