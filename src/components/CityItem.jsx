@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function CityItem({ city }) {
   const { cityName, emoji, date, id, position } = city;
-  const { currentCity } = useCities();
+  const { currentCity, deleteCity } = useCities();
 
   const formatDate = (date) =>
     new Intl.DateTimeFormat("en", {
@@ -15,6 +15,12 @@ function CityItem({ city }) {
       weekday: "long",
     }).format(new Date(date));
 
+
+    function handleDelete(e){
+      e.preventDefault();
+      console.log("deleting", id)
+      deleteCity(id)
+    }
   return (
     <li>
       {/* in this case it attaches the id to the existent url
@@ -29,7 +35,7 @@ function CityItem({ city }) {
         <span className={styles.emoji}>{emoji}</span>
         <h3 className={styles.name}>{cityName}</h3>
         <time className={styles.date}>{formatDate(date)}</time>
-        <button className={styles.deleteBtn}>&times;</button>
+        <button className={styles.deleteBtn} onClick={e=>handleDelete(e)}>&times;</button>
       </Link>
     </li>
   );
